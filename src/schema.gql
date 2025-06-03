@@ -1,0 +1,33 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserSettings {
+  userId: Int!
+  receivedNotification: Boolean!
+  receivedEmail: Boolean!
+}
+
+type User {
+  id: Int!
+  userName: String!
+  displayName: String
+  settings: UserSettings
+}
+
+type AirSpace {
+  id: Float!
+  colors: String!
+  pilot: String!
+  name: String!
+}
+
+type Query {
+  getUserById(id: Int!): User
+  Users: [User!]!
+  getAirSpace(id: Int!): AirSpace!
+}
+
+type Mutation {
+  createUser(userName: String!, displayName: String!): User!
+}
