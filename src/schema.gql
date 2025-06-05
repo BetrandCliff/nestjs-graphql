@@ -23,11 +23,24 @@ type AirSpace {
 }
 
 type Query {
+  getUserSettings: [UserSettings!]!
   getUserById(id: Int!): User
   Users: [User!]!
   getAirSpace(id: Int!): AirSpace!
 }
 
 type Mutation {
-  createUser(userName: String!, displayName: String!): User!
+  createUserSettings(userSettings: createUSerSettings!): UserSettings!
+  createUser(userData: CreateUserDate!): User!
+}
+
+input createUSerSettings {
+  userId: Float
+  receivedNotification: Boolean!
+  receivedEmail: Boolean!
+}
+
+input CreateUserDate {
+  userName: String!
+  displayName: String
 }

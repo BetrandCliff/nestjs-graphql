@@ -1,25 +1,29 @@
 import { Args, Int, Mutation, Parent, Query, ResolveField, Resolver } from "@nestjs/graphql";
-import { User } from "../model/user";
+import { User } from "../graphql/model/user";
 import { mockUser } from "src/__mocks__/mockUsers";
-import { AirSpace } from "../model/airspace";
+import { AirSpace } from "../graphql/model/airspace";
 import { mockAirSpace } from "src/__mocks__/mockAirspace";
 import { of } from "rxjs";
-import { UserSettings } from "../model/userSetting";
+import { UserSettings } from "../graphql/model/userSetting";
 import { mockUserSettings } from "src/__mocks__/mockUserSettings";
 import { CreateUserDate } from "src/util/createUser";
+import { Inject } from "@nestjs/common";
+import { UserService } from "./user.service";
 
 @Resolver((of)=>User)
 export class UserResolver{
-
+constructor(@Inject(UserService)private userService:UserService){}
 
         @Query(()=>User,{name:"getUserById",nullable:true})
         async getUserById(@Args('id',{type:()=>Int}) id:number){
-                return mockUser.find((user)=>user.id===id)
+                    return this.userService.getUser(id)
+                // return mockUser.find((user)=>user.id===id)
             }
 
         @Query(()=>[User],{name:"Users"})
-        getUsers(){
-            return mockUser
+      async  getUsers(){
+            // return mockUser
+            return this.userService.getUsers()
         }
 
         @ResolveField((returns)=>UserSettings,{name:"settings",nullable:true})
@@ -36,15 +40,17 @@ export class UserResolver{
 
         @Mutation((returns) =>User)
         createUser(@Args('userData') userData:CreateUserDate){
-            const newUser={
-                id:mockUser.length+1,
-                userName:userData.userName,
-                displayName:userData.displayName
-            }
+            // const newUser={
+            //     id:mockUser.length+1,
+            //     userName:userData.userName,
+            //     displayName:userData.displayName
+            // }
 
-            mockUser.push(newUser)
+            // mockUser.push(newUser)
 
-            return newUser 
+          return  this.userService.createNewUser(userData)
+
+            // return newUser 
         }
 
 
